@@ -1,0 +1,13 @@
+diff --git src/osgDB/CMakeLists.txt src/osgDB/CMakeLists.txt
+index 340aae095..7c8c03db5 100644
+--- src/osgDB/CMakeLists.txt
++++ src/osgDB/CMakeLists.txt
+@@ -7,7 +7,7 @@ IF   (DYNAMIC_OPENSCENEGRAPH)
+ 
+     IF(OSG_PLUGIN_SEARCH_INSTALL_DIR_FOR_PLUGINS)
+         # Add a default plugin search path component
+-        ADD_DEFINITIONS(-DOSG_DEFAULT_LIBRARY_PATH=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_POSTFIX}/${OSG_PLUGINS}\")
++        ADD_DEFINITIONS(-DOSG_DEFAULT_LIBRARY_PATH=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_POSTFIX}\")
+     ENDIF()
+ 
+     # Set the library extension according to what configuration is being built.
