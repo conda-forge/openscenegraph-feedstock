@@ -64,7 +64,6 @@ test:
   commands:
     - pkg-config --modversion {{ name }}
     - test -f $PREFIX/include/osg/ref_ptr
-    - osgviewer -l osgdb_stl.so
 
 about:
   home: http://github.com/openscenegraph/OpenSceneGraph
