@@ -9,10 +9,10 @@ source:
   url: https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-{{ version }}.tar.gz
   sha256: aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12
   patches:
-    - cmake.patch
+    - osg.patch
 
 build:
-  number: 2
+  number: 3
   skip: true  # [win]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -64,7 +64,6 @@ test:
   commands:
     - pkg-config --modversion {{ name }}
     - test -f $PREFIX/include/osg/ref_ptr
-  
 
 about:
   home: http://github.com/openscenegraph/OpenSceneGraph

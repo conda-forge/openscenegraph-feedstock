@@ -1,0 +1,24 @@
+diff --git src/osgDB/FileUtils.cpp src/osgDB/FileUtils.cpp
+index c0c8cec88..2bea2c38e 100644
+--- src/osgDB/FileUtils.cpp
++++ src/osgDB/FileUtils.cpp
+@@ -119,6 +119,7 @@ typedef char TCHAR;
+ #include <string.h>
+ 
+ #include <stack>
++#include <algorithm>
+ 
+ namespace osgDB
+ {
+@@ -531,7 +532,10 @@ static void appendInstallationLibraryFilePaths(osgDB::FilePathList& filepath)
+ #ifdef OSG_DEFAULT_LIBRARY_PATH
+ 
+     // Append the install prefix path to the library search path if configured
+-    filepath.push_back(OSG_DEFAULT_LIBRARY_PATH);
++    std::string path = OSG_DEFAULT_LIBRARY_PATH;
++    const char empty_character = '\0';
++    path.erase(std::remove(path.begin(), path.end(), empty_character), path.end());
++    filepath.push_back(path);
+ #endif
+ }
+ 
