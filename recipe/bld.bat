@@ -7,6 +7,7 @@ cmake ^
     -G "NMake Makefiles" ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -DCMAKE_BUILD_TYPE=Release ^
+    -DOSG_TEXT_USE_FONTCONFIG=OFF ^
     %SRC_DIR%
 if errorlevel 1 exit 1
 
