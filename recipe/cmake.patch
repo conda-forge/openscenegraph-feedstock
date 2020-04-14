@@ -1,0 +1,14 @@
+diff --git src/osgText/CMakeLists.txt src/osgText/CMakeLists.txt
+index 9d64a5843..3b6422762 100644
+--- src/osgText/CMakeLists.txt
++++ src/osgText/CMakeLists.txt
+@@ -52,7 +52,8 @@ SET(TARGET_LIBRARIES
+ 
+ if(OSG_TEXT_USE_FONTCONFIG AND Fontconfig_FOUND)
+     MESSAGE(STATUS "osgText will be linked with FontConfig library")
+-    LIST(APPEND TARGET_EXTERNAL_LIBRARIES Fontconfig::Fontconfig)
++    LIST(APPEND TARGET_EXTERNAL_LIBRARIES Fontconfig::Fontconfig )
++    LIST(APPEND TARGET_EXTERNAL_LIBRARIES LibXml2::LibXml2 )
+     ADD_DEFINITIONS(-DWITH_FONTCONFIG)
+ else()
+     MESSAGE(STATUS "osgText will not be linked with FontConfig library")

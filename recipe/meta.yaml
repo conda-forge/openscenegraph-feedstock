@@ -10,9 +10,10 @@ source:
   sha256: aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12
   patches:
     - osg.patch
+    - cmake.patch  # [win]
 
 build:
-  number: 5
+  number: 6
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
