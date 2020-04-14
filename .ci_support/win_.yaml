@@ -1,0 +1,47 @@
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2017
+ffmpeg:
+- '4.1'
+fontconfig:
+- '2.13'
+freetype:
+- 2.9.1
+graphviz:
+- '2.40'
+jpeg:
+- '9'
+libcurl:
+- '7.64'
+libjpeg_turbo:
+- '2'
+libpng:
+- '1.6'
+libtiff:
+- 4.1.0
+pin_run_as_build:
+  ffmpeg:
+    max_pin: x.x
+  fontconfig:
+    max_pin: x
+  freetype:
+    max_pin: x
+  graphviz:
+    max_pin: x
+  jpeg:
+    max_pin: x
+  libcurl:
+    max_pin: x
+  libjpeg_turbo:
+    max_pin: x
+  libpng:
+    max_pin: x.x
+  libtiff:
+    max_pin: x
+  zlib:
+    max_pin: x.x
+zlib:
+- '1.2'
