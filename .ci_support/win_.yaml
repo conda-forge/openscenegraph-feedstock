@@ -5,17 +5,15 @@ channel_targets:
 cxx_compiler:
 - vs2017
 ffmpeg:
-- '4.1'
+- '4.2'
 fontconfig:
 - '2.13'
 freetype:
 - 2.9.1
-graphviz:
-- '2.40'
 jpeg:
 - '9'
 libcurl:
-- '7.64'
+- '7'
 libjpeg_turbo:
 - '2'
 libpng:
@@ -29,8 +27,6 @@ pin_run_as_build:
     max_pin: x
   freetype:
     max_pin: x
-  graphviz:
-    max_pin: x
   jpeg:
     max_pin: x
   libcurl:
@@ -43,5 +39,7 @@ pin_run_as_build:
     max_pin: x
   zlib:
     max_pin: x.x
+vc:
+- '14'
 zlib:
 - '1.2'

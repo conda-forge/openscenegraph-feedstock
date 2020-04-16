@@ -9,7 +9,7 @@ cxx_compiler_version:
 docker_image:
 - condaforge/linux-anvil-comp7
 ffmpeg:
-- '4.1'
+- '4.2'
 fontconfig:
 - '2.13'
 freetype:
@@ -19,7 +19,7 @@ graphviz:
 jpeg:
 - '9'
 libcurl:
-- '7.64'
+- '7'
 libjpeg_turbo:
 - '2'
 libpng:
