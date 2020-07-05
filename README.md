@@ -5,7 +5,7 @@ Home: http://github.com/openscenegraph/OpenSceneGraph
 
 Package license: LGPL-2.1-only
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: OpenSceneGraph, an open source high performance 3D graphics toolkit
 
