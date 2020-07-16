@@ -8,7 +8,7 @@ cmake ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DOSG_TEXT_USE_FONTCONFIG=OFF ^
-    -DCOLLADA_DOM_DIR=%PREFIX%\include\collada-dom2.5 ^
+    -DCOLLADA_DOM_ROOT=%PREFIX% ^
     %SRC_DIR%
 if errorlevel 1 exit 1
 
