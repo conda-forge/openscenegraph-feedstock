@@ -11,9 +11,10 @@ source:
   patches:
     - osg.patch
     - cmake.patch  # [win]
+    - collada-dom.patch
 
 build:
-  number: 8
+  number: 9
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
