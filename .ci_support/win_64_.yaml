@@ -4,6 +4,8 @@ channel_targets:
 - conda-forge main
 cxx_compiler:
 - vs2017
+expat:
+- '2.2'
 ffmpeg:
 - '4.3'
 fontconfig:
@@ -21,6 +23,8 @@ libpng:
 libtiff:
 - 4.1.0
 pin_run_as_build:
+  expat:
+    max_pin: x.x
   ffmpeg:
     max_pin: x.x
   fontconfig:
