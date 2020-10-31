@@ -25,7 +25,7 @@ requirements:
     - cmake
     - pkg-config
     - doxygen
-    - graphviz  # [unix]
+    - graphviz       # [unix]
     - graphviz 2.38  # [win]
     - {{ cdt('mesa-dri-drivers') }}      # [linux]
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
@@ -37,6 +37,7 @@ requirements:
     - {{ cdt('libxfixes') }}             # [linux]
     - {{ cdt('libxxf86vm') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
+    - {{ cdt('libxcb') }}                # [linux]
   host:
     - expat
     - freetype
