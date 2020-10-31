@@ -1,15 +1,23 @@
+cdt_name:
+- cos6
 channel_sources:
 - conda-forge,defaults
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2017
+- gxx
+cxx_compiler_version:
+- '7'
+docker_image:
+- condaforge/linux-anvil-comp7
 ffmpeg:
 - '4.3'
 fontconfig:
 - '2.13'
 freetype:
 - 2.9.1
+graphviz:
+- '2.40'
 jpeg:
 - '9'
 libcurl:
@@ -27,6 +35,8 @@ pin_run_as_build:
     max_pin: x
   freetype:
     max_pin: x
+  graphviz:
+    max_pin: x
   jpeg:
     max_pin: x
   libcurl:
@@ -39,7 +49,7 @@ pin_run_as_build:
     max_pin: x
   zlib:
     max_pin: x.x
-vc:
-- '14'
+target_platform:
+- linux-64
 zlib:
 - '1.2'
