@@ -3,19 +3,13 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- gxx
-cxx_compiler_version:
-- '7'
-docker_image:
-- condaforge/linux-anvil-comp7
+- vs2017
 ffmpeg:
 - '4.3'
 fontconfig:
 - '2.13'
 freetype:
 - 2.9.1
-graphviz:
-- '2.40'
 jpeg:
 - '9'
 libcurl:
@@ -33,8 +27,6 @@ pin_run_as_build:
     max_pin: x
   freetype:
     max_pin: x
-  graphviz:
-    max_pin: x
   jpeg:
     max_pin: x
   libcurl:
@@ -47,5 +39,9 @@ pin_run_as_build:
     max_pin: x
   zlib:
     max_pin: x.x
+target_platform:
+- win-64
+vc:
+- '14'
 zlib:
 - '1.2'

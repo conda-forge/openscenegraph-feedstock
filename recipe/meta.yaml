@@ -14,7 +14,7 @@ source:
     - collada-dom.patch
 
 build:
-  number: 9
+  number: 10
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -34,7 +34,9 @@ requirements:
     - {{ cdt('libxdamage-devel') }}      # [linux]
     - {{ cdt('libxfixes-devel') }}       # [linux]
     - {{ cdt('libxxf86vm') }}            # [linux]
+    - {{ cdt('libxext') }}               # [linux]
   host:
+    - expat
     - freetype
     - libjpeg-turbo
     - jpeg
@@ -43,11 +45,12 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - xorg-libx11 
+    - xorg-libx11  # [linux]
     - ffmpeg
     - fontconfig
     - collada-dom
   run:
+    - expat
     - freetype
     - libjpeg-turbo
     - jpeg
@@ -56,7 +59,7 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - xorg-libx11 
+    - xorg-libx11  # [linux]
     - ffmpeg
     - fontconfig
     - collada-dom

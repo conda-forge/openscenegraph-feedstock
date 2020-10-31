@@ -7,7 +7,7 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '9'
+- '10'
 ffmpeg:
 - '4.3'
 fontconfig:
@@ -28,8 +28,6 @@ libtiff:
 - 4.1.0
 macos_machine:
 - x86_64-apple-darwin13.4.0
-macos_min_version:
-- '10.9'
 pin_run_as_build:
   ffmpeg:
     max_pin: x.x
@@ -51,5 +49,7 @@ pin_run_as_build:
     max_pin: x
   zlib:
     max_pin: x.x
+target_platform:
+- osx-64
 zlib:
 - '1.2'
