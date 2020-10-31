@@ -34,7 +34,9 @@ requirements:
     - {{ cdt('libxdamage-devel') }}      # [linux]
     - {{ cdt('libxfixes-devel') }}       # [linux]
     - {{ cdt('libxxf86vm') }}            # [linux]
+    - {{ cdt('libxext') }}               # [linux]
   host:
+    - expat
     - freetype
     - libjpeg-turbo
     - jpeg
@@ -48,6 +50,7 @@ requirements:
     - fontconfig
     - collada-dom
   run:
+    - expat
     - freetype
     - libjpeg-turbo
     - jpeg
