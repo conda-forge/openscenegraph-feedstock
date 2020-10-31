@@ -32,7 +32,8 @@ requirements:
     - {{ cdt('mesa-libegl-devel') }}     # [linux]
     - {{ cdt('libselinux-devel') }}      # [linux]
     - {{ cdt('libxdamage-devel') }}      # [linux]
-    - {{ cdt('libxfixes-devel') }}       # [linux]
+    - {{ cdt('libx11-devel') }}          # [linux]
+    - {{ cdt('libxfixes') }}             # [linux]
     - {{ cdt('libxxf86vm') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
   host:
@@ -45,7 +46,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - xorg-libx11  # [linux]
     - ffmpeg
     - fontconfig
     - collada-dom
@@ -59,7 +59,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - xorg-libx11  # [linux]
     - ffmpeg
     - fontconfig
     - collada-dom
