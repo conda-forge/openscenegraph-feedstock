@@ -33,6 +33,7 @@ requirements:
     - {{ cdt('libselinux-devel') }}      # [linux]
     - {{ cdt('libxdamage-devel') }}      # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
+    - {{ cdt('libxfixes-devel') }}       # [linux]
     - {{ cdt('libxfixes') }}             # [linux]
     - {{ cdt('libxxf86vm') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
