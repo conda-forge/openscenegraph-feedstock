@@ -8,7 +8,7 @@ cmake .. \
       -DCMAKE_PREFIX_PATH=$PREFIX \
       -DCMAKE_INSTALL_PREFIX=$PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
+      -DOSG_WINDOWING_SYSTEM=X11
 
 make -j${CPU_COUNT}
 make install
-
