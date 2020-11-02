@@ -25,8 +25,8 @@ requirements:
     - cmake
     - pkg-config
     - doxygen
-    - graphviz       # [unix]
-    - graphviz 2.38  # [win]
+    - graphviz                           # [unix]
+    - graphviz 2.38                      # [win]
     - {{ cdt('mesa-dri-drivers') }}      # [linux]
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
     - {{ cdt('mesa-libegl-devel') }}     # [linux]
@@ -71,8 +71,8 @@ test:
   requires:
     - pkg-config
   commands:
-    - pkg-config --modversion {{ name }}  # [unix]
-    - test -f $PREFIX/include/osg/ref_ptr  # [unix]
+    - pkg-config --modversion {{ name }}                            # [unix]
+    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
     - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
 about:
