@@ -41,6 +41,7 @@ requirements:
     - {{ cdt('libxcb') }}                # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
   host:
+    - xorg-libx11  # [osx]
     - expat
     - freetype
     - libjpeg-turbo
