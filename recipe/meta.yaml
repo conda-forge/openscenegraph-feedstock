@@ -14,7 +14,7 @@ source:
     - collada-dom.patch
 
 build:
-  number: 10
+  number: 11
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -25,16 +25,21 @@ requirements:
     - cmake
     - pkg-config
     - doxygen
-    - graphviz  # [unix]
-    - graphviz 2.38  # [win]
+    - graphviz                           # [unix]
+    - graphviz 2.38                      # [win]
     - {{ cdt('mesa-dri-drivers') }}      # [linux]
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
     - {{ cdt('mesa-libegl-devel') }}     # [linux]
     - {{ cdt('libselinux-devel') }}      # [linux]
     - {{ cdt('libxdamage-devel') }}      # [linux]
+    - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxfixes-devel') }}       # [linux]
+    - {{ cdt('libxau-devel') }}          # [linux]
+    - {{ cdt('libxfixes') }}             # [linux]
     - {{ cdt('libxxf86vm') }}            # [linux]
     - {{ cdt('libxext') }}               # [linux]
+    - {{ cdt('libxcb') }}                # [linux]
+    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
   host:
     - expat
     - freetype
@@ -45,7 +50,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - xorg-libx11  # [linux]
     - ffmpeg
     - fontconfig
     - collada-dom
@@ -59,7 +63,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - xorg-libx11  # [linux]
     - ffmpeg
     - fontconfig
     - collada-dom
@@ -68,8 +71,8 @@ test:
   requires:
     - pkg-config
   commands:
-    - pkg-config --modversion {{ name }}  # [unix]
-    - test -f $PREFIX/include/osg/ref_ptr  # [unix]
+    - pkg-config --modversion {{ name }}                            # [unix]
+    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
     - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
 about:
