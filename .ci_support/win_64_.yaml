@@ -5,13 +5,13 @@ channel_targets:
 cxx_compiler:
 - vs2017
 expat:
-- '2.2'
+- '2.3'
 ffmpeg:
 - '4.3'
 fontconfig:
 - '2.13'
 freetype:
-- 2.9.1
+- '2'
 jpeg:
 - '9'
 libcurl:
@@ -21,11 +21,9 @@ libjpeg_turbo:
 libpng:
 - '1.6'
 libtiff:
-- 4.1.0
+- '4'
 pin_run_as_build:
   expat:
-    max_pin: x.x
-  ffmpeg:
     max_pin: x.x
   fontconfig:
     max_pin: x

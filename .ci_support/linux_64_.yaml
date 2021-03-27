@@ -7,17 +7,17 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '7'
+- '9'
 docker_image:
-- condaforge/linux-anvil-comp7
+- quay.io/condaforge/linux-anvil-comp7
 expat:
-- '2.2'
+- '2.3'
 ffmpeg:
 - '4.3'
 fontconfig:
 - '2.13'
 freetype:
-- 2.9.1
+- '2'
 graphviz:
 - '2.40'
 jpeg:
@@ -29,11 +29,9 @@ libjpeg_turbo:
 libpng:
 - '1.6'
 libtiff:
-- 4.1.0
+- '4'
 pin_run_as_build:
   expat:
-    max_pin: x.x
-  ffmpeg:
     max_pin: x.x
   fontconfig:
     max_pin: x
@@ -55,5 +53,8 @@ pin_run_as_build:
     max_pin: x.x
 target_platform:
 - linux-64
+zip_keys:
+- - cdt_name
+  - docker_image
 zlib:
 - '1.2'
