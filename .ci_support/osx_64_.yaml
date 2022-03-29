@@ -1,23 +1,23 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '10.9'
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '10'
+- '12'
 expat:
-- '2.2'
+- '2'
 ffmpeg:
 - '4.3'
 fontconfig:
 - '2.13'
 freetype:
-- 2.9.1
+- '2'
 graphviz:
-- '2.40'
+- '2.47'
 jpeg:
 - '9'
 libcurl:
@@ -27,14 +27,10 @@ libjpeg_turbo:
 libpng:
 - '1.6'
 libtiff:
-- 4.1.0
+- '4'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 pin_run_as_build:
-  expat:
-    max_pin: x.x
-  ffmpeg:
-    max_pin: x.x
   fontconfig:
     max_pin: x
   freetype:
