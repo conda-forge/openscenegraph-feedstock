@@ -11,7 +11,7 @@ cxx_compiler_version:
 expat:
 - '2'
 ffmpeg:
-- '4.3'
+- '4.4'
 fontconfig:
 - '2.13'
 freetype:
