@@ -1,5 +1,5 @@
 MACOSX_DEPLOYMENT_TARGET:
-- '10.9'
+- '11.0'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -29,7 +29,7 @@ libpng:
 libtiff:
 - '4'
 macos_machine:
-- x86_64-apple-darwin13.4.0
+- arm64-apple-darwin20.0.0
 pin_run_as_build:
   fontconfig:
     max_pin: x
@@ -50,6 +50,6 @@ pin_run_as_build:
   zlib:
     max_pin: x.x
 target_platform:
-- osx-64
+- osx-arm64
 zlib:
 - '1.2'
