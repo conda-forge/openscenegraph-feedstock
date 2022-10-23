@@ -7,17 +7,17 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '13'
+- '14'
 expat:
 - '2'
 ffmpeg:
-- '4.4'
+- '5'
 fontconfig:
-- '2.13'
+- '2'
 freetype:
 - '2'
 graphviz:
-- '3'
+- '6'
 jpeg:
 - '9'
 libcurl:
@@ -31,24 +31,8 @@ libtiff:
 macos_machine:
 - arm64-apple-darwin20.0.0
 pin_run_as_build:
-  fontconfig:
-    max_pin: x
-  freetype:
-    max_pin: x
   graphviz:
     max_pin: x
-  jpeg:
-    max_pin: x
-  libcurl:
-    max_pin: x
-  libjpeg_turbo:
-    max_pin: x
-  libpng:
-    max_pin: x.x
-  libtiff:
-    max_pin: x
-  zlib:
-    max_pin: x.x
 target_platform:
 - osx-arm64
 zlib:
