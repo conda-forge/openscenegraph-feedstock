@@ -14,7 +14,7 @@ source:
     - collada-dom.patch
 
 build:
-  number: 14
+  number: 15
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
