@@ -20,12 +20,10 @@ freetype:
 - '2'
 graphviz:
 - '6'
-jpeg:
-- '9'
 libcurl:
 - '7'
 libjpeg_turbo:
-- '2'
+- 2.1.5
 libpng:
 - '1.6'
 libtiff:

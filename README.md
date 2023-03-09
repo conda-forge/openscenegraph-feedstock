@@ -1,11 +1,11 @@
-About openscenegraph
-====================
+About openscenegraph-feedstock
+==============================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/openscenegraph-feedstock/blob/main/LICENSE.txt)
 
 Home: http://github.com/openscenegraph/OpenSceneGraph
 
 Package license: LGPL-2.1-only
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/openscenegraph-feedstock/blob/main/LICENSE.txt)
 
 Summary: OpenSceneGraph, an open source high performance 3D graphics toolkit
 
