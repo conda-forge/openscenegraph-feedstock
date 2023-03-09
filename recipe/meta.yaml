@@ -14,7 +14,7 @@ source:
     - collada-dom.patch
 
 build:
-  number: 15
+  number: 16
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -45,7 +45,7 @@ requirements:
     - expat
     - freetype
     - libjpeg-turbo
-    - jpeg
+    - libjpeg-turbo
     - freetype
     - zlib
     - libtiff
@@ -58,7 +58,7 @@ requirements:
     - expat
     - freetype
     - libjpeg-turbo
-    - jpeg
+    - libjpeg-turbo
     - freetype
     - zlib
     - libtiff
