@@ -7,7 +7,7 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '11'
+- '12'
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 expat:
@@ -19,13 +19,11 @@ fontconfig:
 freetype:
 - '2'
 graphviz:
-- '6'
-jpeg:
-- '9'
+- '8'
 libcurl:
-- '7'
+- '8'
 libjpeg_turbo:
-- '2'
+- 2.1.5
 libpng:
 - '1.6'
 libtiff:
