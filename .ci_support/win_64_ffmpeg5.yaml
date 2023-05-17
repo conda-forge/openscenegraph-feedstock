@@ -1,0 +1,28 @@
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2019
+expat:
+- '2'
+ffmpeg:
+- '5'
+fontconfig:
+- '2'
+freetype:
+- '2'
+libcurl:
+- '8'
+libjpeg_turbo:
+- 2.1.5
+libpng:
+- '1.6'
+libtiff:
+- '4.5'
+target_platform:
+- win-64
+vc:
+- '14'
+zlib:
+- '1.2'
