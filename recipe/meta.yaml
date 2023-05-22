@@ -14,10 +14,10 @@ source:
     - collada-dom.patch
 
 build:
-  number: 16
+  number: 17
   skip: true  # [win and vc<14]
   run_exports:
-    - {{ pin_subpackage(name, max_pin='x.x') }}
+    - {{ pin_subpackage(name, max_pin='x.x.x') }}
 
 requirements:
   build:
@@ -51,7 +51,7 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg
+    - ffmpeg 4.4
     - fontconfig
     - collada-dom
   run:
