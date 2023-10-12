@@ -73,6 +73,16 @@ requirements:
     - ffmpeg
     - fontconfig
     - collada-dom
+    - libxcb                             # [linux]
+    - xcb-util-wm                        # [linux]
+    - xcb-util-keysyms                   # [linux]
+    - xcb-util-image                     # [linux]
+    - xcb-util-renderutil                # [linux]
+    - xorg-libx11                        # [linux]
+    - xorg-libxext                       # [linux]
+    - xorg-libsm                         # [linux]
+    - xorg-libice                        # [linux]
+    - xorg-xf86vidmodeproto              # [linux]
 
 test:
   requires:
