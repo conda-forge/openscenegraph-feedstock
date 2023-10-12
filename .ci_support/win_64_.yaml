@@ -7,7 +7,7 @@ cxx_compiler:
 expat:
 - '2'
 ffmpeg:
-- '5'
+- '6'
 fontconfig:
 - '2'
 freetype:
