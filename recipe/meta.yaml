@@ -14,7 +14,7 @@ source:
     - collada-dom.patch
 
 build:
-  number: 16
+  number: 17
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -32,15 +32,7 @@ requirements:
     - {{ cdt('mesa-libgl-devel') }}      # [linux]
     - {{ cdt('mesa-libegl-devel') }}     # [linux]
     - {{ cdt('libselinux-devel') }}      # [linux]
-    - {{ cdt('libxdamage-devel') }}      # [linux]
-    - {{ cdt('libx11-devel') }}          # [linux]
-    - {{ cdt('libxfixes-devel') }}       # [linux]
-    - {{ cdt('libxau-devel') }}          # [linux]
-    - {{ cdt('libxfixes') }}             # [linux]
-    - {{ cdt('libxxf86vm') }}            # [linux]
-    - {{ cdt('libxext') }}               # [linux]
-    - {{ cdt('libxcb') }}                # [linux]
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux]
+
   host:
     - expat
     - freetype
@@ -51,9 +43,23 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg
+    - ffmpeg 4.4
+    # See https://github.com/conda-forge/openscenegraph-feedstock/pull/31
+    # And https://github.com/conda-forge/ffmpeg-feedstock/pull/214 
     - fontconfig
     - collada-dom
+    - xcb-util                           # [linux]
+    - xcb-util-wm                        # [linux]
+    - xcb-util-keysyms                   # [linux]
+    - xcb-util-image                     # [linux]
+    - xcb-util-renderutil                # [linux]
+    - xorg-libx11                        # [linux]
+    - xorg-libxext                       # [linux]
+    - xorg-libxdamage                    # [linux]
+    - xorg-libsm                         # [linux]
+    - xorg-libice                        # [linux]
+    - xorg-libxxf86vm                    # [linux]
+    - xorg-xf86vidmodeproto              # [linux]
   run:
     - expat
     - freetype
@@ -67,6 +73,16 @@ requirements:
     - ffmpeg
     - fontconfig
     - collada-dom
+    - libxcb                             # [linux]
+    - xcb-util-wm                        # [linux]
+    - xcb-util-keysyms                   # [linux]
+    - xcb-util-image                     # [linux]
+    - xcb-util-renderutil                # [linux]
+    - xorg-libx11                        # [linux]
+    - xorg-libxext                       # [linux]
+    - xorg-libsm                         # [linux]
+    - xorg-libice                        # [linux]
+    - xorg-xf86vidmodeproto              # [linux]
 
 test:
   requires:
@@ -92,3 +108,4 @@ extra:
   recipe-maintainers:
     - traversaro
     - jcarpent
+    - ymontmarin
