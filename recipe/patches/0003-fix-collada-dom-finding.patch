@@ -1,7 +1,7 @@
 From 6763ead3fd0be8471d11d6cdb032af5200369ad1 Mon Sep 17 00:00:00 2001
 From: Justin Carpentier <justin.carpentier@inria.fr>
 Date: Thu, 16 Jul 2020 18:29:27 +0200
-Subject: [PATCH 3/3] fix collada-dom finding
+Subject: [PATCH 3/5] fix collada-dom finding
 
 ---
  CMakeModules/FindCOLLADA.cmake | 22 ++++++++--------------

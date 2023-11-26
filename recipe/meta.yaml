@@ -11,6 +11,10 @@ source:
     - patches/0001-fix-path-issues.patch
     - patches/0002-win-fix-fonttype.patch           # [win]
     - patches/0003-fix-collada-dom-finding.patch
+    # from https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1004634#41
+    - patches/0004-Audio-compatibility-with-ffmpeg-5.patch
+    # from https://github.com/openscenegraph/OpenSceneGraph/issues/1111#issuecomment-1826503140
+    - patches/0005-Compatibility-with-ffmpeg-5.1.4.patch
 
 build:
   number: 18

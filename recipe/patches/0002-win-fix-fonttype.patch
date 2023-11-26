@@ -1,7 +1,7 @@
 From 54540ccae7731d77bc2834885e2c88db79c4b175 Mon Sep 17 00:00:00 2001
 From: Justin Carpentier <justin.carpentier@inria.fr>
 Date: Tue, 14 Apr 2020 18:05:18 +0200
-Subject: [PATCH 2/3] win: fix fonttype
+Subject: [PATCH 2/5] win: fix fonttype
 
 ---
  src/osgText/CMakeLists.txt | 3 ++-
