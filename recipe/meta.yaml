@@ -17,7 +17,7 @@ source:
     - patches/0005-Compatibility-with-ffmpeg-5.1.4.patch
 
 build:
-  number: 18
+  number: 19
   run_exports:
     - {{ pin_subpackage("openscenegraph", max_pin='x.x') }}
 
@@ -45,7 +45,7 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg 4.4
+    - ffmpeg 5.1
     # See https://github.com/conda-forge/openscenegraph-feedstock/pull/31
     # And https://github.com/conda-forge/ffmpeg-feedstock/pull/214 
     - fontconfig
@@ -72,7 +72,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg
     - fontconfig
     - collada-dom
     - libxcb                             # [linux]
