@@ -8,9 +8,9 @@ source:
   url: https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-{{ version }}.tar.gz
   sha256: aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12
   patches:
-    - osg.patch
-    - cmake.patch  # [win]
-    - collada-dom.patch
+    - patches/0001-fix-path-issues.patch
+    - patches/0002-win-fix-fonttype.patch           # [win]
+    - patches/0003-fix-collada-dom-finding.patch
 
 build:
   number: 18
