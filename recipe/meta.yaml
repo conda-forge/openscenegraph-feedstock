@@ -1,8 +1,7 @@
-{% set name = "openscenegraph" %}
 {% set version = "3.6.5" %}
 
 package:
-  name: {{ name|lower }}
+  name: openscenegraph
   version: {{ version }}
 
 source:
@@ -15,9 +14,8 @@ source:
 
 build:
   number: 18
-  skip: true  # [win and vc<14]
   run_exports:
-    - {{ pin_subpackage(name, max_pin='x.x') }}
+    - {{ pin_subpackage("openscenegraph", max_pin='x.x') }}
 
 requirements:
   build:
@@ -88,9 +86,9 @@ test:
   requires:
     - pkg-config
   commands:
-    - pkg-config --modversion {{ name }}                            # [unix]
-    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
-    - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
+    - pkg-config --modversion openscenegraph            # [unix]
+    - test -f $PREFIX/include/osg/ref_ptr               # [unix]
+    - if not exist %LIBRARY_INC%\osg\ref_ptr exit 1     # [win]
 
 about:
   home: http://github.com/openscenegraph/OpenSceneGraph
