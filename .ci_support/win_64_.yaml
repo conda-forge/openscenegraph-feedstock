@@ -6,8 +6,6 @@ cxx_compiler:
 - vs2019
 expat:
 - '2'
-ffmpeg:
-- '6'
 fontconfig:
 - '2'
 freetype:
@@ -22,7 +20,5 @@ libtiff:
 - '4.6'
 target_platform:
 - win-64
-vc:
-- '14'
 zlib:
 - '1.2'
