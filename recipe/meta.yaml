@@ -1,23 +1,25 @@
-{% set name = "openscenegraph" %}
 {% set version = "3.6.5" %}
 
 package:
-  name: {{ name|lower }}
+  name: openscenegraph
   version: {{ version }}
 
 source:
   url: https://github.com/openscenegraph/OpenSceneGraph/archive/OpenSceneGraph-{{ version }}.tar.gz
   sha256: aea196550f02974d6d09291c5d83b51ca6a03b3767e234a8c0e21322927d1e12
   patches:
-    - osg.patch
-    - cmake.patch  # [win]
-    - collada-dom.patch
+    - patches/0001-fix-path-issues.patch
+    - patches/0002-win-fix-fonttype.patch           # [win]
+    - patches/0003-fix-collada-dom-finding.patch
+    # from https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1004634#41
+    - patches/0004-Audio-compatibility-with-ffmpeg-5.patch
+    # from https://github.com/openscenegraph/OpenSceneGraph/issues/1111#issuecomment-1826503140
+    - patches/0005-Compatibility-with-ffmpeg-5.1.4.patch
 
 build:
-  number: 18
-  skip: true  # [win and vc<14]
+  number: 19
   run_exports:
-    - {{ pin_subpackage(name, max_pin='x.x') }}
+    - {{ pin_subpackage("openscenegraph", max_pin='x.x') }}
 
 requirements:
   build:
@@ -43,7 +45,7 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg 4.4
+    - ffmpeg 5.1
     # See https://github.com/conda-forge/openscenegraph-feedstock/pull/31
     # And https://github.com/conda-forge/ffmpeg-feedstock/pull/214 
     - fontconfig
@@ -70,7 +72,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg
     - fontconfig
     - collada-dom
     - libxcb                             # [linux]
@@ -88,9 +89,9 @@ test:
   requires:
     - pkg-config
   commands:
-    - pkg-config --modversion {{ name }}                            # [unix]
-    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
-    - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
+    - pkg-config --modversion openscenegraph            # [unix]
+    - test -f $PREFIX/include/osg/ref_ptr               # [unix]
+    - if not exist %LIBRARY_INC%\osg\ref_ptr exit 1     # [win]
 
 about:
   home: http://github.com/openscenegraph/OpenSceneGraph
