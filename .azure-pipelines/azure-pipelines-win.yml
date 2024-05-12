@@ -8,8 +8,11 @@ jobs:
     vmImage: windows-2022
   strategy:
     matrix:
-      win_64_:
-        CONFIG: win_64_
+      win_64_ffmpeg6:
+        CONFIG: win_64_ffmpeg6
+        UPLOAD_PACKAGES: 'True'
+      win_64_ffmpeg7:
+        CONFIG: win_64_ffmpeg7
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
   variables:
@@ -42,6 +45,9 @@ jobs:
         PYTHONUNBUFFERED: 1
         CONFIG: $(CONFIG)
         CI: azure
+        flow_run_id: azure_$(Build.BuildNumber).$(System.JobAttempt)
+        remote_url: $(Build.Repository.Uri)
+        sha: $(Build.SourceVersion)
         UPLOAD_PACKAGES: $(UPLOAD_PACKAGES)
         UPLOAD_TEMP: $(UPLOAD_TEMP)
         BINSTAR_TOKEN: $(BINSTAR_TOKEN)
