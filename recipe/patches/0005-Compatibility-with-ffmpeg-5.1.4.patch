@@ -1,0 +1,437 @@
+From 5c07bdc373fe98e4e356ea81ef32afbc47388cc7 Mon Sep 17 00:00:00 2001
+From: spillner <spillner@acm.org>
+Date: Sun, 26 Nov 2023 14:37:02 +1000
+Subject: [PATCH 5/5] Compatibility with ffmpeg-5.1.4
+
+---
+ src/osgPlugins/ffmpeg/FFmpegDecoder.cpp      |  11 +-
+ src/osgPlugins/ffmpeg/FFmpegDecoderVideo.cpp | 217 ++++++++++---------
+ src/osgPlugins/ffmpeg/FFmpegDecoderVideo.hpp |   9 +-
+ src/osgPlugins/ffmpeg/FFmpegParameters.hpp   |   4 +-
+ src/osgPlugins/ffmpeg/ReaderWriterFFmpeg.cpp |   7 +-
+ 5 files changed, 128 insertions(+), 120 deletions(-)
+
+diff --git a/src/osgPlugins/ffmpeg/FFmpegDecoder.cpp b/src/osgPlugins/ffmpeg/FFmpegDecoder.cpp
+index 4de143d22..9107c380f 100644
+--- a/src/osgPlugins/ffmpeg/FFmpegDecoder.cpp
++++ b/src/osgPlugins/ffmpeg/FFmpegDecoder.cpp
+@@ -62,7 +62,7 @@ bool FFmpegDecoder::open(const std::string & filename, FFmpegParameters* paramet
+     {
+         // Open video file
+         AVFormatContext * p_format_context = 0;
+-        AVInputFormat *iformat = 0;
++        const AVInputFormat *iformat = 0;
+ 
+         if (filename.compare(0, 5, "/dev/")==0)
+         {
+@@ -304,12 +304,11 @@ bool FFmpegDecoder::readNextPacketNormal()
+         else
+         {
+             // Make the packet data available beyond av_read_frame() logical scope.
+-            if ((error = av_dup_packet(&packet)) < 0) {
+-                OSG_FATAL << "av_dup_packet() returned " << AvStrError(error) << std::endl;
+-                throw std::runtime_error("av_dup_packet() failed");
++            if ((error = av_packet_ref(&(m_pending_packet.packet), &packet)) < 0) {
++                OSG_FATAL << "av_packet_ref() returned " << AvStrError(error) << std::endl;
++                throw std::runtime_error("av_packet_ref() failed");
+             }
+-
+-            m_pending_packet = FFmpegPacket(packet);
++	    m_pending_packet.type = FFmpegPacket::PACKET_DATA;
+         }
+     }
+ 
+diff --git a/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.cpp b/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.cpp
+index 25df979a0..563d41664 100644
+--- a/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.cpp
++++ b/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.cpp
+@@ -6,6 +6,9 @@
+ #include <stdexcept>
+ #include <string.h>
+ 
++#include <libavutil/imgutils.h>
++
++
+ namespace osgFFmpeg {
+ 
+ // TODO - add support for using RGB or RGBA pixel format.
+@@ -18,8 +21,6 @@ FFmpegDecoderVideo::FFmpegDecoderVideo(PacketQueue & packets, FFmpegClocks & clo
+     m_stream(0),
+     m_context(0),
+     m_codec(0),
+-    m_packet_data(0),
+-    m_bytes_remaining(0),
+     m_packet_pts(AV_NOPTS_VALUE),
+     m_writeBuffer(0),
+     m_user_data(0),
+@@ -61,8 +62,12 @@ FFmpegDecoderVideo::~FFmpegDecoderVideo()
+ 
+ void FFmpegDecoderVideo::open(AVStream * const stream)
+ {
++    int linesizes[4];
++
+     m_stream = stream;
+-    m_context = stream->codec;
++
++    if (avcodec_parameters_to_context(m_context, stream->codecpar) < 0)
++        throw std::runtime_error("avcodec_parameters_to_context() failed inside FFMpegDecoderVideo::open()");
+ 
+     // Trust the video size given at this point
+     // (avcodec_open seems to sometimes return a 0x0 size)
+@@ -99,11 +104,15 @@ void FFmpegDecoderVideo::open(AVStream * const stream)
+ 
+     // Allocate converted RGB frame
+     m_frame_rgba.reset(av_frame_alloc());
+-    m_buffer_rgba[0].resize(avpicture_get_size(AV_PIX_FMT_RGB24, width(), height()));
++    m_buffer_rgba[0].resize(av_image_get_buffer_size(AV_PIX_FMT_RGB24, width(), height(), 1));
+     m_buffer_rgba[1].resize(m_buffer_rgba[0].size());
+ 
+     // Assign appropriate parts of the buffer to image planes in m_frame_rgba
++#if BCS
+     avpicture_fill((AVPicture *) (m_frame_rgba).get(), &(m_buffer_rgba[0])[0], AV_PIX_FMT_RGB24, width(), height());
++#else
++    av_image_fill_arrays(m_frame_rgba.get()->data, linesizes, &(m_buffer_rgba[0])[0], AV_PIX_FMT_RGB24, width(), height(), 1);
++#endif
+ 
+     // Override get_buffer()/release_buffer() from codec context in order to retrieve the PTS of each frame.
+     m_context->opaque = this;
+@@ -148,128 +157,123 @@ void FFmpegDecoderVideo::run()
+ }
+ 
+ 
+-
+-void FFmpegDecoderVideo::decodeLoop()
++double FFmpegDecoderVideo::calculateFramePTS(int64_t packet_dts)
+ {
+-    FFmpegPacket packet;
+-    double pts;
++    double pts = 0;
+ 
+-    while (! m_exit)
++#if LIBAVCODEC_VERSION_INT <= AV_VERSION_INT(57,24,102)
++    //ffmpeg-3.0 and below
++    AVRational timebase;
++    // Find out the frame pts
++    if (m_frame->pts != int64_t(AV_NOPTS_VALUE))
+     {
+-        // Work on the current packet until we have decoded all of it
+-
+-        while (m_bytes_remaining > 0)
+-        {
+-            // Save global PTS to be stored in m_frame via getBuffer()
++        pts = m_frame->pts;
++        timebase = m_context->time_base;
++    }
++    else if (packet_dts == int64_t(AV_NOPTS_VALUE) &&
++            m_frame->opaque != 0 &&
++            *reinterpret_cast<const int64_t*>(m_frame->opaque) != int64_t(AV_NOPTS_VALUE))
++    {
++        pts = *reinterpret_cast<const int64_t*>(m_frame->opaque);
++        timebase = m_stream->time_base;
++    }
++    else if (packet_dts != int64_t(AV_NOPTS_VALUE))
++    {
++        pts = packet_dts;
++        timebase = m_stream->time_base;
++    }
++    else
++    {
++        timebase = m_context->time_base;
++    }
+ 
+-            m_packet_pts = packet.packet.pts;
++    pts *= av_q2d(timebase);
+ 
+-            // Decode video frame
++#else
++    //above ffmpeg-3.0
++    // Find out the frame pts
++    if (m_frame->pts != int64_t(AV_NOPTS_VALUE))
++    {
++        pts = av_q2d(m_stream->time_base) * m_frame->pts;
++    }
++    else if (packet_dts == int64_t(AV_NOPTS_VALUE) &&
++            m_frame->opaque != 0 &&
++            *reinterpret_cast<const int64_t*>(m_frame->opaque) != int64_t(AV_NOPTS_VALUE))
++    {
++        pts = av_q2d(m_stream->time_base) * *reinterpret_cast<const int64_t*>(m_frame->opaque);
++    }
++    else if (packet_dts != int64_t(AV_NOPTS_VALUE))
++    {
++        pts = av_q2d(m_stream->time_base) * packet_dts;
++    }
++#endif
+ 
+-            int frame_finished = 0;
++    return pts;
++}
+ 
+-            // We want to use the entire packet since some codecs will require extra information for decoding
+-            const int bytes_decoded = avcodec_decode_video2(m_context, m_frame.get(), &frame_finished, &(packet.packet));
+ 
+-            if (bytes_decoded < 0)
+-                throw std::runtime_error("avcodec_decode_video failed()");
++void FFmpegDecoderVideo::decodeLoop()
++{
++    bool need_more_data = true;
++    FFmpegPacket packet;
+ 
+-            m_bytes_remaining -= bytes_decoded;
+-            m_packet_data += bytes_decoded;
++    while (! m_exit)
++    {
++	if (need_more_data)
++	{
++            bool is_empty = true;
++            packet = m_packets.timedPop(is_empty, 10);
+ 
+-            // Publish the frame if we have decoded a complete frame
+-            if (frame_finished)
++            if (! is_empty)
+             {
+-#if LIBAVCODEC_VERSION_INT <= AV_VERSION_INT(57,24,102)
+-                //ffmpeg-3.0 and below
+-                AVRational timebase;
+-                // Find out the frame pts
+-                if (m_frame->pts != int64_t(AV_NOPTS_VALUE))
+-                {
+-                    pts = m_frame->pts;
+-                    timebase = m_context->time_base;
+-                }
+-                else if (packet.packet.dts == int64_t(AV_NOPTS_VALUE) &&
+-                        m_frame->opaque != 0 &&
+-                        *reinterpret_cast<const int64_t*>(m_frame->opaque) != int64_t(AV_NOPTS_VALUE))
+-                {
+-                    pts = *reinterpret_cast<const int64_t*>(m_frame->opaque);
+-                    timebase = m_stream->time_base;
+-                }
+-                else if (packet.packet.dts != int64_t(AV_NOPTS_VALUE))
+-                {
+-                    pts = packet.packet.dts;
+-                    timebase = m_stream->time_base;
+-                }
+-                else
+-                {
+-                    pts = 0;
+-                    timebase = m_context->time_base;
+-                }
+-
+-                pts *= av_q2d(timebase);
++                if (packet.type == FFmpegPacket::PACKET_FLUSH)
++                    avcodec_flush_buffers(m_context);
+ 
+-#else
+-                //above ffmpeg-3.0
+-                // Find out the frame pts
+-                if (m_frame->pts != int64_t(AV_NOPTS_VALUE))
+-                {
+-                    pts = av_q2d(m_stream->time_base) * m_frame->pts;
+-                }
+-                else if (packet.packet.dts == int64_t(AV_NOPTS_VALUE) &&
+-                        m_frame->opaque != 0 &&
+-                        *reinterpret_cast<const int64_t*>(m_frame->opaque) != int64_t(AV_NOPTS_VALUE))
+-                {
+-                    pts = av_q2d(m_stream->time_base) * *reinterpret_cast<const int64_t*>(m_frame->opaque);
+-                }
+-                else if (packet.packet.dts != int64_t(AV_NOPTS_VALUE))
+-                {
+-                    pts = av_q2d(m_stream->time_base) * packet.packet.dts;
+-                }
+-                else
+-                {
+-                    pts = 0;
+-                }
+-#endif
+-                const double synched_pts = m_clocks.videoSynchClock(m_frame.get(), av_q2d(av_inv_q(m_context->framerate)), pts);
+-                const double frame_delay = m_clocks.videoRefreshSchedule(synched_pts);
++                // Save global PTS to be stored in m_frame via getBuffer()
++                m_packet_pts = packet.packet.pts;
+ 
+-                publishFrame(frame_delay, m_clocks.audioDisabled());
++	        if (avcodec_send_packet(m_context, &packet.packet) < 0)
++                    throw std::runtime_error("avcodec_send_packet() failed inside FFmpegDecoderVideo::decodeLoop()");
+             }
+-        }
++	}
+ 
+-        while(m_paused && !m_exit)
+-        {
+-            microSleep(10000);
+-        }
++        const int decode_status = avcodec_receive_frame(m_context, m_frame.get());
+ 
+-        // Get the next packet
++	if (decode_status == 0)
++	{
++            // Completed at least one full frame
++	    need_more_data = false;
+ 
+-        pts = 0;
++	    const double pts = calculateFramePTS(m_frame.get()->pkt_dts);
++            const double synched_pts = m_clocks.videoSynchClock(m_frame.get(), av_q2d(av_inv_q(m_context->framerate)), pts);
++            const double frame_delay = m_clocks.videoRefreshSchedule(synched_pts);
+ 
+-        if (packet.valid())
+-            packet.clear();
++            publishFrame(frame_delay, m_clocks.audioDisabled());
++        }
++	else if (decode_status == AVERROR(EOF))
++	{
++            // Decoder has reached end of the stream
++	    return;
++        }
++	else if (decode_status == AVERROR(EAGAIN))
++	{
++            // Frame not yet complete
++	    need_more_data = true;
+ 
+-        bool is_empty = true;
+-        packet = m_packets.timedPop(is_empty, 10);
++            if (packet.valid())
++                packet.clear();
++	}
++	else
++            throw std::runtime_error("avcodec_receive_frame() failed inside FFmpegDecoderVideo::decodeLoop()");
+ 
+-        if (! is_empty)
++        while(m_paused && !m_exit)
+         {
+-            if (packet.type == FFmpegPacket::PACKET_DATA)
+-            {
+-                m_bytes_remaining = packet.packet.size;
+-                m_packet_data = packet.packet.data;
+-            }
+-            else if (packet.type == FFmpegPacket::PACKET_FLUSH)
+-            {
+-                avcodec_flush_buffers(m_context);
+-            }
++            microSleep(10000);
+         }
+     }
+ }
+ 
+ 
+-
+ void FFmpegDecoderVideo::findAspectRatio()
+ {
+     float ratio = 0.0f;
+@@ -283,7 +287,8 @@ void FFmpegDecoderVideo::findAspectRatio()
+     m_pixel_aspect_ratio = ratio;
+ }
+ 
+-int FFmpegDecoderVideo::convert(AVPicture *dst, int dst_pix_fmt, AVPicture *src,
++
++int FFmpegDecoderVideo::convert(AVFrame *dst, int dst_pix_fmt, AVFrame *src,
+             int src_pix_fmt, int src_width, int src_height)
+ {
+     osg::Timer_t startTick = osg::Timer::instance()->tick();
+@@ -318,6 +323,8 @@ int FFmpegDecoderVideo::convert(AVPicture *dst, int dst_pix_fmt, AVPicture *src,
+ 
+ void FFmpegDecoderVideo::publishFrame(const double delay, bool audio_disabled)
+ {
++    int linesizes[4];
++
+     // If no publishing function, just ignore the frame
+     if (m_publish_func == 0)
+         return;
+@@ -334,11 +341,11 @@ void FFmpegDecoderVideo::publishFrame(const double delay, bool audio_disabled)
+         return;
+ #endif
+ 
+-    AVPicture * const src = (AVPicture *) m_frame.get();
+-    AVPicture * const dst = (AVPicture *) m_frame_rgba.get();
++    AVFrame * const src = (AVFrame *) m_frame.get();
++    AVFrame * const dst = (AVFrame *) m_frame_rgba.get();
+ 
+     // Assign appropriate parts of the buffer to image planes in m_frame_rgba
+-    avpicture_fill((AVPicture *) (m_frame_rgba).get(), &(m_buffer_rgba[m_writeBuffer])[0], AV_PIX_FMT_RGB24, width(), height());
++    av_image_fill_arrays(m_frame_rgba.get()->data, linesizes, &(m_buffer_rgba[m_writeBuffer])[0], AV_PIX_FMT_RGB24, width(), height(), 1);
+ 
+     // Convert YUVA420p (i.e. YUV420p plus alpha channel) using our own routine
+ 
+@@ -370,7 +377,7 @@ void FFmpegDecoderVideo::publishFrame(const double delay, bool audio_disabled)
+ 
+ 
+ 
+-void FFmpegDecoderVideo::yuva420pToRgba(AVPicture * const dst, AVPicture * const src, int width, int height)
++void FFmpegDecoderVideo::yuva420pToRgba(AVFrame * const dst, AVFrame * const src, int width, int height)
+ {
+     convert(dst, AV_PIX_FMT_RGB24, src, m_context->pix_fmt, width, height);
+ 
+diff --git a/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.hpp b/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.hpp
+index 778c1a9b8..f9a1fa467 100644
+--- a/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.hpp
++++ b/src/osgPlugins/ffmpeg/FFmpegDecoderVideo.hpp
+@@ -87,10 +87,11 @@ private:
+     void decodeLoop();
+     void findAspectRatio();
+     void publishFrame(double delay, bool audio_disabled);
++    double calculateFramePTS(int64_t packet_dts);
+     double synchronizeVideo(double pts);
+-    void yuva420pToRgba(AVPicture *dst, AVPicture *src, int width, int height);
++    void yuva420pToRgba(AVFrame *dst, AVFrame *src, int width, int height);
+ 
+-    int convert(AVPicture *dst, int dst_pix_fmt, AVPicture *src,
++    int convert(AVFrame *dst, int dst_pix_fmt, AVFrame *src,
+                 int src_pix_fmt, int src_width, int src_height);
+ 
+ 
+@@ -101,9 +102,7 @@ private:
+     FFmpegClocks &          m_clocks;
+     AVStream *              m_stream;
+     AVCodecContext *        m_context;
+-    AVCodec *               m_codec;
+-    const uint8_t *         m_packet_data;
+-    int                     m_bytes_remaining;
++    const AVCodec *         m_codec;
+     int64_t                 m_packet_pts;
+     
+     FramePtr                m_frame;
+diff --git a/src/osgPlugins/ffmpeg/FFmpegParameters.hpp b/src/osgPlugins/ffmpeg/FFmpegParameters.hpp
+index ebfc17f6b..1b8dd287e 100644
+--- a/src/osgPlugins/ffmpeg/FFmpegParameters.hpp
++++ b/src/osgPlugins/ffmpeg/FFmpegParameters.hpp
+@@ -20,7 +20,7 @@ public:
+ 
+     bool isFormatAvailable() const { return m_format!=NULL; }
+     
+-    AVInputFormat* getFormat() { return m_format; }
++    const AVInputFormat* getFormat() { return m_format; }
+     AVDictionary** getOptions() { return &m_options; }
+     void setContext(AVIOContext* context) { m_context = context; }
+     AVIOContext* getContext() { return m_context; }
+@@ -29,7 +29,7 @@ public:
+ 
+ protected:
+ 
+-    AVInputFormat* m_format;
++    const AVInputFormat* m_format;
+     AVIOContext* m_context;
+     AVDictionary* m_options;
+ };
+diff --git a/src/osgPlugins/ffmpeg/ReaderWriterFFmpeg.cpp b/src/osgPlugins/ffmpeg/ReaderWriterFFmpeg.cpp
+index f468ee81f..2d8d3a729 100644
+--- a/src/osgPlugins/ffmpeg/ReaderWriterFFmpeg.cpp
++++ b/src/osgPlugins/ffmpeg/ReaderWriterFFmpeg.cpp
+@@ -20,7 +20,7 @@
+ #include <osgDB/FileUtils>
+ 
+ 
+-#if LIBAVCODEC_VERSION_MAJOR >= 53 || \
++#if (LIBAVCODEC_VERSION_MAJOR>=53 && LIBAVCODEC_VERSION_MAJOR<=58) || \
+     (LIBAVCODEC_VERSION_MAJOR==52 && LIBAVCODEC_VERSION_MINOR>=30) || \
+     (LIBAVCODEC_VERSION_MAJOR==52 && LIBAVCODEC_VERSION_MINOR==20 && LIBAVCODEC_VERSION_MICRO >= 1)
+     #define USE_AV_LOCK_MANAGER
+@@ -117,8 +117,11 @@ public:
+         // enable thread locking
+         av_lockmgr_register(&lockMgr);
+ #endif
+-        // Register all FFmpeg formats/codecs
++
++#if LIBAVCODEC_VERSION_MAJOR<=57
++        // Register all FFmpeg formats/codecs--- not required in FFmpeg 4.0 and later
+         av_register_all();
++#endif
+ 
+         avformat_network_init();
+     }
