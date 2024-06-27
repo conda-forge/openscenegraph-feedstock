@@ -20,6 +20,8 @@ build:
 
 outputs:
   - name: {{ name|lower }}
+    script: build.sh  # [not win]
+    script: bld.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -99,6 +101,8 @@ outputs:
         - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
   - name: {{ name|lower }}-with-no-ffmpeg
+    script: build.sh  # [not win]
+    script: bld.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage(name, max_pin='x.x') }}
