@@ -17,81 +17,160 @@ source:
 build:
   number: 18
   skip: true  # [win and vc<14]
-  run_exports:
-    - {{ pin_subpackage(name, max_pin='x.x') }}
 
-requirements:
-  build:
-    - {{ compiler('cxx') }}
-    - cmake
-    - make
-    - pkg-config
-    - doxygen
-    - graphviz                           # [unix]
-    - graphviz 2.38                      # [win]
-    - {{ cdt('mesa-dri-drivers') }}      # [linux]
-    - {{ cdt('mesa-libgl-devel') }}      # [linux]
-    - {{ cdt('mesa-libegl-devel') }}     # [linux]
-    - {{ cdt('libselinux-devel') }}      # [linux]
+outputs:
+  - name: {{ name|lower }}
+    build:
+      run_exports:
+        - {{ pin_subpackage(name, max_pin='x.x') }}
 
-  host:
-    - expat
-    - freetype
-    - libjpeg-turbo
-    - libjpeg-turbo
-    - freetype
-    - zlib
-    - libtiff
-    - libcurl
-    - libpng
-    - ffmpeg 4.4
-    # See https://github.com/conda-forge/openscenegraph-feedstock/pull/31
-    # And https://github.com/conda-forge/ffmpeg-feedstock/pull/214 
-    - fontconfig
-    - collada-dom
-    - xcb-util                           # [linux]
-    - xcb-util-wm                        # [linux]
-    - xcb-util-keysyms                   # [linux]
-    - xcb-util-image                     # [linux]
-    - xcb-util-renderutil                # [linux]
-    - xorg-libx11                        # [linux]
-    - xorg-libxext                       # [linux]
-    - xorg-libxdamage                    # [linux]
-    - xorg-libsm                         # [linux]
-    - xorg-libice                        # [linux]
-    - xorg-libxxf86vm                    # [linux]
-    - xorg-xf86vidmodeproto              # [linux]
-  run:
-    - expat
-    - freetype
-    - libjpeg-turbo
-    - libjpeg-turbo
-    - freetype
-    - zlib
-    - libtiff
-    - libcurl
-    - libpng
-    - ffmpeg
-    - fontconfig
-    - collada-dom
-    - libxcb                             # [linux]
-    - xcb-util-wm                        # [linux]
-    - xcb-util-keysyms                   # [linux]
-    - xcb-util-image                     # [linux]
-    - xcb-util-renderutil                # [linux]
-    - xorg-libx11                        # [linux]
-    - xorg-libxext                       # [linux]
-    - xorg-libsm                         # [linux]
-    - xorg-libice                        # [linux]
-    - xorg-xf86vidmodeproto              # [linux]
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - cmake
+        - make
+        - pkg-config
+        - doxygen
+        - graphviz                           # [unix]
+        - graphviz 2.38                      # [win]
+        - {{ cdt('mesa-dri-drivers') }}      # [linux]
+        - {{ cdt('mesa-libgl-devel') }}      # [linux]
+        - {{ cdt('mesa-libegl-devel') }}     # [linux]
+        - {{ cdt('libselinux-devel') }}      # [linux]
 
-test:
-  requires:
-    - pkg-config
-  commands:
-    - pkg-config --modversion {{ name }}                            # [unix]
-    - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
-    - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
+      host:
+        - expat
+        - freetype
+        - libjpeg-turbo
+        - libjpeg-turbo
+        - freetype
+        - zlib
+        - libtiff
+        - libcurl
+        - libpng
+        - ffmpeg 4.4
+        # See https://github.com/conda-forge/openscenegraph-feedstock/pull/31
+        # And https://github.com/conda-forge/ffmpeg-feedstock/pull/214 
+        - fontconfig
+        - collada-dom
+        - xcb-util                           # [linux]
+        - xcb-util-wm                        # [linux]
+        - xcb-util-keysyms                   # [linux]
+        - xcb-util-image                     # [linux]
+        - xcb-util-renderutil                # [linux]
+        - xorg-libx11                        # [linux]
+        - xorg-libxext                       # [linux]
+        - xorg-libxdamage                    # [linux]
+        - xorg-libsm                         # [linux]
+        - xorg-libice                        # [linux]
+        - xorg-libxxf86vm                    # [linux]
+        - xorg-xf86vidmodeproto              # [linux]
+      run:
+        - expat
+        - freetype
+        - libjpeg-turbo
+        - libjpeg-turbo
+        - freetype
+        - zlib
+        - libtiff
+        - libcurl
+        - libpng
+        - ffmpeg
+        - fontconfig
+        - collada-dom
+        - libxcb                             # [linux]
+        - xcb-util-wm                        # [linux]
+        - xcb-util-keysyms                   # [linux]
+        - xcb-util-image                     # [linux]
+        - xcb-util-renderutil                # [linux]
+        - xorg-libx11                        # [linux]
+        - xorg-libxext                       # [linux]
+        - xorg-libsm                         # [linux]
+        - xorg-libice                        # [linux]
+        - xorg-xf86vidmodeproto              # [linux]
+
+    test:
+      requires:
+        - pkg-config
+      commands:
+        - pkg-config --modversion {{ name }}                            # [unix]
+        - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
+        - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
+
+  - name: {{ name|lower }}-with-no-ffmpeg
+    build:
+      run_exports:
+        - {{ pin_subpackage(name, max_pin='x.x') }}
+
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - cmake
+        - make
+        - pkg-config
+        - doxygen
+        - graphviz                           # [unix]
+        - graphviz 2.38                      # [win]
+        - {{ cdt('mesa-dri-drivers') }}      # [linux]
+        - {{ cdt('mesa-libgl-devel') }}      # [linux]
+        - {{ cdt('mesa-libegl-devel') }}     # [linux]
+        - {{ cdt('libselinux-devel') }}      # [linux]
+
+      host:
+        - expat
+        - freetype
+        - libjpeg-turbo
+        - libjpeg-turbo
+        - freetype
+        - zlib
+        - libtiff
+        - libcurl
+        - libpng
+        - fontconfig
+        - collada-dom
+        - xcb-util                           # [linux]
+        - xcb-util-wm                        # [linux]
+        - xcb-util-keysyms                   # [linux]
+        - xcb-util-image                     # [linux]
+        - xcb-util-renderutil                # [linux]
+        - xorg-libx11                        # [linux]
+        - xorg-libxext                       # [linux]
+        - xorg-libxdamage                    # [linux]
+        - xorg-libsm                         # [linux]
+        - xorg-libice                        # [linux]
+        - xorg-libxxf86vm                    # [linux]
+        - xorg-xf86vidmodeproto              # [linux]
+      run:
+        - expat
+        - freetype
+        - libjpeg-turbo
+        - libjpeg-turbo
+        - freetype
+        - zlib
+        - libtiff
+        - libcurl
+        - libpng
+        - ffmpeg
+        - fontconfig
+        - collada-dom
+        - libxcb                             # [linux]
+        - xcb-util-wm                        # [linux]
+        - xcb-util-keysyms                   # [linux]
+        - xcb-util-image                     # [linux]
+        - xcb-util-renderutil                # [linux]
+        - xorg-libx11                        # [linux]
+        - xorg-libxext                       # [linux]
+        - xorg-libsm                         # [linux]
+        - xorg-libice                        # [linux]
+        - xorg-xf86vidmodeproto              # [linux]
+
+    test:
+      requires:
+        - pkg-config
+      commands:
+        - pkg-config --modversion {{ name }}                            # [unix]
+        - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
+        - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
 about:
   home: http://github.com/openscenegraph/OpenSceneGraph
