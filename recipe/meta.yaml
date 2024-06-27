@@ -19,12 +19,12 @@ build:
   skip: true  # [win and vc<14]
 
 outputs:
-  - name: {{ name|lower }}
+  - name: openscenegraph
     script: build.sh  # [not win]
     script: bld.bat  # [win]
     build:
       run_exports:
-        - {{ pin_subpackage(name, max_pin='x.x') }}
+        - {{ pin_subpackage('openscenegraph', max_pin='x.x') }}
 
     requirements:
       build:
@@ -100,12 +100,12 @@ outputs:
         - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
         - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
-  - name: {{ name|lower }}-with-no-ffmpeg
+  - name: openscenegraph-with-no-ffmpeg
     script: build.sh  # [not win]
     script: bld.bat  # [win]
     build:
       run_exports:
-        - {{ pin_subpackage(name, max_pin='x.x') }}
+        - {{ pin_subpackage('openscenegraph-with-no-ffmpeg', max_pin='x.x') }}
 
     requirements:
       build:
