@@ -75,6 +75,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-openscenegraph-green.svg)](https://anaconda.org/conda-forge/openscenegraph) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/openscenegraph.svg)](https://anaconda.org/conda-forge/openscenegraph) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/openscenegraph.svg)](https://anaconda.org/conda-forge/openscenegraph) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/openscenegraph.svg)](https://anaconda.org/conda-forge/openscenegraph) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-openscenegraph--with--no--ffmpeg-green.svg)](https://anaconda.org/conda-forge/openscenegraph-with-no-ffmpeg) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/openscenegraph-with-no-ffmpeg.svg)](https://anaconda.org/conda-forge/openscenegraph-with-no-ffmpeg) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/openscenegraph-with-no-ffmpeg.svg)](https://anaconda.org/conda-forge/openscenegraph-with-no-ffmpeg) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/openscenegraph-with-no-ffmpeg.svg)](https://anaconda.org/conda-forge/openscenegraph-with-no-ffmpeg) |
 
 Installing openscenegraph
 =========================
@@ -86,16 +87,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `openscenegraph` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `openscenegraph, openscenegraph-with-no-ffmpeg` can be installed with `conda`:
 
 ```
-conda install openscenegraph
+conda install openscenegraph openscenegraph-with-no-ffmpeg
 ```
 
 or with `mamba`:
 
 ```
-mamba install openscenegraph
+mamba install openscenegraph openscenegraph-with-no-ffmpeg
 ```
 
 It is possible to list all of the versions of `openscenegraph` available on your platform with `conda`:
