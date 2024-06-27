@@ -100,83 +100,83 @@ outputs:
         - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
         - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
-  - name: openscenegraph-with-no-ffmpeg
-    script: build.sh  # [not win]
-    script: bld.bat  # [win]
-    build:
-      run_exports:
-        - {{ pin_subpackage('openscenegraph-with-no-ffmpeg', max_pin='x.x') }}
+  # - name: openscenegraph-with-no-ffmpeg
+  #   script: build.sh  # [not win]
+  #   script: bld.bat  # [win]
+  #   build:
+  #     run_exports:
+  #       - {{ pin_subpackage('openscenegraph-with-no-ffmpeg', max_pin='x.x') }}
 
-    requirements:
-      build:
-        - {{ compiler('cxx') }}
-        - {{ stdlib('c') }}
-        - cmake
-        - make
-        - pkg-config
-        - doxygen
-        - graphviz                           # [unix]
-        - graphviz 2.38                      # [win]
-        - {{ cdt('mesa-dri-drivers') }}      # [linux]
-        - {{ cdt('mesa-libgl-devel') }}      # [linux]
-        - {{ cdt('mesa-libegl-devel') }}     # [linux]
-        - {{ cdt('libselinux-devel') }}      # [linux]
+  #   requirements:
+  #     build:
+  #       - {{ compiler('cxx') }}
+  #       - {{ stdlib('c') }}
+  #       - cmake
+  #       - make
+  #       - pkg-config
+  #       - doxygen
+  #       - graphviz                           # [unix]
+  #       - graphviz 2.38                      # [win]
+  #       - {{ cdt('mesa-dri-drivers') }}      # [linux]
+  #       - {{ cdt('mesa-libgl-devel') }}      # [linux]
+  #       - {{ cdt('mesa-libegl-devel') }}     # [linux]
+  #       - {{ cdt('libselinux-devel') }}      # [linux]
 
-      host:
-        - expat
-        - freetype
-        - libjpeg-turbo
-        - libjpeg-turbo
-        - freetype
-        - zlib
-        - libtiff
-        - libcurl
-        - libpng
-        - fontconfig
-        - collada-dom
-        - xcb-util                           # [linux]
-        - xcb-util-wm                        # [linux]
-        - xcb-util-keysyms                   # [linux]
-        - xcb-util-image                     # [linux]
-        - xcb-util-renderutil                # [linux]
-        - xorg-libx11                        # [linux]
-        - xorg-libxext                       # [linux]
-        - xorg-libxdamage                    # [linux]
-        - xorg-libsm                         # [linux]
-        - xorg-libice                        # [linux]
-        - xorg-libxxf86vm                    # [linux]
-        - xorg-xf86vidmodeproto              # [linux]
-      run:
-        - expat
-        - freetype
-        - libjpeg-turbo
-        - libjpeg-turbo
-        - freetype
-        - zlib
-        - libtiff
-        - libcurl
-        - libpng
-        - ffmpeg
-        - fontconfig
-        - collada-dom
-        - libxcb                             # [linux]
-        - xcb-util-wm                        # [linux]
-        - xcb-util-keysyms                   # [linux]
-        - xcb-util-image                     # [linux]
-        - xcb-util-renderutil                # [linux]
-        - xorg-libx11                        # [linux]
-        - xorg-libxext                       # [linux]
-        - xorg-libsm                         # [linux]
-        - xorg-libice                        # [linux]
-        - xorg-xf86vidmodeproto              # [linux]
+  #     host:
+  #       - expat
+  #       - freetype
+  #       - libjpeg-turbo
+  #       - libjpeg-turbo
+  #       - freetype
+  #       - zlib
+  #       - libtiff
+  #       - libcurl
+  #       - libpng
+  #       - fontconfig
+  #       - collada-dom
+  #       - xcb-util                           # [linux]
+  #       - xcb-util-wm                        # [linux]
+  #       - xcb-util-keysyms                   # [linux]
+  #       - xcb-util-image                     # [linux]
+  #       - xcb-util-renderutil                # [linux]
+  #       - xorg-libx11                        # [linux]
+  #       - xorg-libxext                       # [linux]
+  #       - xorg-libxdamage                    # [linux]
+  #       - xorg-libsm                         # [linux]
+  #       - xorg-libice                        # [linux]
+  #       - xorg-libxxf86vm                    # [linux]
+  #       - xorg-xf86vidmodeproto              # [linux]
+  #     run:
+  #       - expat
+  #       - freetype
+  #       - libjpeg-turbo
+  #       - libjpeg-turbo
+  #       - freetype
+  #       - zlib
+  #       - libtiff
+  #       - libcurl
+  #       - libpng
+  #       - ffmpeg
+  #       - fontconfig
+  #       - collada-dom
+  #       - libxcb                             # [linux]
+  #       - xcb-util-wm                        # [linux]
+  #       - xcb-util-keysyms                   # [linux]
+  #       - xcb-util-image                     # [linux]
+  #       - xcb-util-renderutil                # [linux]
+  #       - xorg-libx11                        # [linux]
+  #       - xorg-libxext                       # [linux]
+  #       - xorg-libsm                         # [linux]
+  #       - xorg-libice                        # [linux]
+  #       - xorg-xf86vidmodeproto              # [linux]
 
-    test:
-      requires:
-        - pkg-config
-      commands:
-        - pkg-config --modversion {{ name }}                            # [unix]
-        - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
-        - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
+  #   test:
+  #     requires:
+  #       - pkg-config
+  #     commands:
+  #       - pkg-config --modversion {{ name }}                            # [unix]
+  #       - test -f $PREFIX/include/osg/ref_ptr                           # [unix]
+  #       - if not exist %PREFIX%\\Library\\include\\osg\\ref_ptr exit 1  # [win]
 
 about:
   home: http://github.com/openscenegraph/OpenSceneGraph
