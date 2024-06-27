@@ -27,6 +27,7 @@ outputs:
     requirements:
       build:
         - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
         - cmake
         - make
         - pkg-config
@@ -105,6 +106,7 @@ outputs:
     requirements:
       build:
         - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
         - cmake
         - make
         - pkg-config
