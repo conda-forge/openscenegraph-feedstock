@@ -1,3 +1,7 @@
+c_stdlib:
+- sysroot
+c_stdlib_version:
+- '2.12'
 cdt_name:
 - cos6
 channel_sources:
@@ -35,5 +39,8 @@ pin_run_as_build:
     max_pin: x
 target_platform:
 - linux-64
+zip_keys:
+- - c_stdlib_version
+  - cdt_name
 zlib:
 - '1'
