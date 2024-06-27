@@ -14,7 +14,7 @@ source:
     - collada-dom.patch
 
 build:
-  number: 18
+  number: 19
   skip: true  # [win and vc<14]
 
 outputs:
