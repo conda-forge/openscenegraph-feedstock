@@ -1,3 +1,5 @@
+c_stdlib:
+- vs
 channel_sources:
 - conda-forge
 channel_targets:
@@ -18,11 +20,9 @@ libjpeg_turbo:
 - '3'
 libpng:
 - '1.6'
-libtiff:
-- '4.6'
 target_platform:
 - win-64
 vc:
 - '14'
 zlib:
-- '1.2'
+- '1'
