@@ -12,6 +12,7 @@ source:
     - osg.patch
     - cmake.patch  # [win]
     - collada-dom.patch
+    - fix_tiff_link.patch
 
 build:
   number: 18
