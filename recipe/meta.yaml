@@ -40,7 +40,7 @@ requirements:
     - libjpeg-turbo
     - freetype
     - zlib
-    - libtiff
+    - libtiff                            # [not win]
     - libcurl
     - libpng
     - ffmpeg 4.4
@@ -67,7 +67,7 @@ requirements:
     - libjpeg-turbo
     - freetype
     - zlib
-    - libtiff
+    - libtiff                            # [not win]
     - libcurl
     - libpng
     - ffmpeg
