@@ -1,0 +1,23 @@
+From 10997808e431959a5cbd8d26265a1d99f190d532 Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Tue, 2 Jul 2024 22:06:41 +0200
+Subject: [PATCH] Link with imported library TIFF::TIFF
+
+Fix for https://github.com/conda-forge/openscenegraph-feedstock/pull/38#issuecomment-2204288842 .
+---
+ src/osgPlugins/tiff/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/osgPlugins/tiff/CMakeLists.txt b/src/osgPlugins/tiff/CMakeLists.txt
+index fc945d68e49..149d13db04c 100644
+--- a/src/osgPlugins/tiff/CMakeLists.txt
++++ b/src/osgPlugins/tiff/CMakeLists.txt
+@@ -2,7 +2,7 @@ INCLUDE_DIRECTORIES( ${TIFF_INCLUDE_DIR} )
+ 
+ SET(TARGET_SRC ReaderWriterTIFF.cpp )
+ 
+-SET(TARGET_LIBRARIES_VARS TIFF_LIBRARY)
++SET(TARGET_EXTERNAL_LIBRARIES TIFF::TIFF)
+ 
+ #### end var setup  ###
+ SETUP_PLUGIN(tiff)
