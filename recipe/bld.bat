@@ -9,7 +9,6 @@ cmake ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DOSG_TEXT_USE_FONTCONFIG=OFF ^
     -DCOLLADA_DOM_ROOT=%LIBRARY_PREFIX% ^
-    -DOSG_FIND_3RD_PARTY_DEPS:BOOL=OFF ^
     %SRC_DIR%
 if errorlevel 1 exit 1
 
