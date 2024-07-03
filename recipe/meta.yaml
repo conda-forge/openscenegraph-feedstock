@@ -15,7 +15,7 @@ source:
     - fix_tiff_link.patch
 
 build:
-  number: 19
+  number: 20
   skip: true  # [win and vc<14]
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
@@ -45,9 +45,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg 4.4
-    # See https://github.com/conda-forge/openscenegraph-feedstock/pull/31
-    # And https://github.com/conda-forge/ffmpeg-feedstock/pull/214 
     - fontconfig
     - collada-dom
     - xcb-util                           # [linux]
@@ -72,7 +69,6 @@ requirements:
     - libtiff
     - libcurl
     - libpng
-    - ffmpeg
     - fontconfig
     - collada-dom
     - libxcb                             # [linux]
