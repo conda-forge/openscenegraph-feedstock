@@ -13,7 +13,7 @@ channel_targets:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '17'
+- '19'
 expat:
 - '2'
 fontconfig:
@@ -21,7 +21,7 @@ fontconfig:
 freetype:
 - '2'
 graphviz:
-- '12'
+- '14'
 libcurl:
 - '8'
 libjpeg_turbo:
@@ -29,7 +29,7 @@ libjpeg_turbo:
 libpng:
 - '1.6'
 libtiff:
-- '4.6'
+- '4.7'
 macos_machine:
 - arm64-apple-darwin20.0.0
 target_platform:
